@@ -1,4 +1,4 @@
-<head> </head>
+<head></head>
 <body>
   <h1>Video Info</h1>
   <form>
@@ -12,21 +12,16 @@
   <h1 id="result"></h1>
 
   <script>
-    const electron = require('electron');
-    const { ipcRenderer } = electron;
-
-    document.querySelector('form').addEventListener('submit', (event) => {
+    document.querySelector("form").addEventListener("submit", (event) => {
       event.preventDefault();
-      const file = document.querySelector('input').files[0];
-      if (file) {
-        ipcRenderer.send('video:submit', file.path || file.name);
-      }
+      const { path } = document.querySelector("input").files[0];
+      window.electron.submitVideo(path);
     });
 
-    ipcRenderer.on('video:metadata', (event, duration) => {
+    window.electron.receiveVideoMetadata((duration) => {
       document.querySelector(
-        '#result'
-      ).innerHTML = `Video is ${duration} seconds`;
+        "#result"
+      ).innerHTML = `Video is ${duration} seconds long.`;
     });
   </script>
 </body>
